@@ -3,7 +3,7 @@ import { TodoInterface } from "types/types";
 
 const prisma = new PrismaClient();
 
-class Todo {
+export class Todo {
     public async GetTodos() {
         try {
            const data = await prisma.todo.findMany({});
@@ -64,5 +64,3 @@ class Todo {
         }
     }
 }
-
-export { Todo }
