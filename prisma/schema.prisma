@@ -14,9 +14,11 @@ model Todo {
   id Int @id @default(autoincrement())
   title String @db.VarChar(255)
   description String?
-  author User? @relation(fields: [authorId], references: [id])
-  resolver User? @relation(fields: [resolverId], references: [id])
-  createdAt Datetime @default(now())
+  author User @relation("CreatedTodos", fields: [authorId], references: [id])
+  authorId Int
+  resolver User? @relation("ResolvingTodos", fields: [resolverId], references: [id])
+  resolverId Int?
+  createdAt DateTime @default(now())
   status TodoStatus @default(New)
 }
 
@@ -26,7 +28,8 @@ model User {
   last_name String
   name String
   email String @unique
-  todos Todo[]
+  createdTodos Todo[] @relation("CreatedTodos")
+  resolvingTodos Todo[] @relation("ResolvingTodos")
 }
 
 enum TodoStatus {
