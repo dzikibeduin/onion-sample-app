@@ -12,6 +12,26 @@ datasource db {
 
 model Todo {
   id Int @id @default(autoincrement())
-  title String
+  title String @db.VarChar(255)
   description String?
+  author User? @relation(fields: [authorId], references: [id])
+  resolver User? @relation(fields: [resolverId], references: [id])
+  createdAt Datetime @default(now())
+  status TodoStatus @default(New)
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  first_name String
+  last_name String
+  name String
+  email String @unique
+  todos Todo[]
+}
+
+enum TodoStatus {
+  New
+  InProgress
+  Done
+  Cancelled
 }
