@@ -26,7 +26,9 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
     router.post('/', async (req: Request, res: Response) => {
         try {
             const { title, description } = req.body;
-            const result = await service.CreateTodo({ title, description });
+            const authorId = 1;
+            
+            const result = await service.CreateTodo({ title, description, authorId });
 
             res.status(200).send({ "result": result });
         } catch (e) {
@@ -38,7 +40,9 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
         try {
             const { title, description } = req.body;
             const id: number = parseInt(req.params.id);
-            const result = await service.UpdateTodo({ title, description }, id);
+            const authorId = 1;
+
+            const result = await service.UpdateTodo({ title, description, authorId }, id);
 
             res.status(200).send({ "result": result });
         } catch (e) {
