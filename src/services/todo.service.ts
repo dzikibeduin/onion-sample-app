@@ -9,7 +9,7 @@ export class TodoService {
             const data = await this.todo.GetTodos();
             return data;
         } catch (e) {
-            console.log(e);
+            throw e;
         }
     }
 
@@ -18,7 +18,7 @@ export class TodoService {
             const data = await this.todo.GetTodo(id);
             return data;
         } catch (e) {
-            console.log(e);
+            throw e;
         }
     }
 
@@ -27,7 +27,7 @@ export class TodoService {
             const result = await this.todo.CreateTodo(data);
             return result;
         } catch (e) {
-            console.log(e);
+            throw e;
         }
     }
 
@@ -36,7 +36,7 @@ export class TodoService {
             const result = await this.todo.UpdateTodo(data, id);
             return result;
         } catch (e) {
-            console.log(e);
+            throw e;
         }
     }
 
@@ -45,7 +45,7 @@ export class TodoService {
             const result = await this.todo.DeleteTodo(id);
             return result;
         } catch (e) {
-            console.log(e);
+            throw e;
         }
     }
 }

@@ -6,8 +6,19 @@ describe("GET all todos", () => {
 
     it ("returns status code 200", async () => {
         const res = await request(app)
-            .get('/')
+            .get('/');
             
         expect(res.statusCode).toEqual(200);
-    })
+    });
+});
+
+describe("POST /create new Todo", () => {
+
+    it ("returns status 400 if no params", async () => {
+        const res = await request(app)
+            .post('/')
+            .send({});
+
+        expect(res.statusCode).toEqual(400);
+    });
 });
