@@ -1,6 +1,8 @@
 import { TodoService } from "services";
 import { Router, Response, Request, NextFunction } from "express";
 import HttpException from "../exceptions/http.exception";
+import validate from "../validations/todo.validation";
+import validationMiddleware from "../middlewares/validation.middleware";
 
 export const TodoRouter = (router: Router, service: TodoService): void => {
     router.get('/', async (req: Request, res: Response) => {
@@ -24,7 +26,7 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
         }
     });
 
-    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+    router.route('/').post(validationMiddleware(validate.create), async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { title, description } = req.body;
             const authorId = 1;
