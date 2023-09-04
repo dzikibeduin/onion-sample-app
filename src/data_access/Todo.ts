@@ -1,7 +1,18 @@
-import { PrismaClient } from "@prisma/client";
+import { $Enums, Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { TodoInterface } from "types/types";
 
 const prisma = new PrismaClient();
+
+interface TodoInterfaceResult {
+    id: number;
+    title: string;
+    description: string | null;
+    authorId: number;
+    resolverId: number | null;
+    createdAt: Date;
+    status: $Enums.TodoStatus;
+}
 
 export class Todo {
     public async GetTodos() {
@@ -9,7 +20,7 @@ export class Todo {
            const data = await prisma.todo.findMany({});
            return data; 
         } catch (e) {
-            throw e;
+            throw JSON.stringify((e as PrismaClientKnownRequestError).message);
         }
     }
 
@@ -22,18 +33,29 @@ export class Todo {
             });
             return data;
         } catch (e) {
-            throw e;
+            throw JSON.stringify((e as PrismaClientKnownRequestError).message);
         }
     }
 
-    public async CreateTodo(data: TodoInterface) {
+    public async CreateTodo(data: TodoInterface): Promise<TodoInterfaceResult> {
         try {
             const result = await prisma.todo.create({
-                data: data
+                data: {
+                    title: data.title,
+                    description: data.description,
+                    author: {
+                        connect: {
+                            id: data.authorId
+                            
+                        }
+                    }
+                }
             });
+            
             return result;
-        } catch (e) {
-            throw e;
+        } catch (e: unknown) {
+            console.log((e as PrismaClientKnownRequestError).message);
+            throw (e as PrismaClientKnownRequestError).message;
         }
     }
 
@@ -47,7 +69,7 @@ export class Todo {
             });
             return result;
         } catch (e) {
-            throw e;
+            throw JSON.stringify((e as PrismaClientKnownRequestError).message);
         }
     }
 
@@ -60,7 +82,7 @@ export class Todo {
             });
             return result;
         } catch (e) {
-            throw e;
+            throw JSON.stringify((e as PrismaClientKnownRequestError).message);
         }
     }
 }

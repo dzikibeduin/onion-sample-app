@@ -9,5 +9,8 @@ module.exports = {
         ecmaVersion: 2018,
         sourceType: 'module'
     },
-    rules: {},
+    rules: {
+        "semi": ["error", "always"],
+        "quotes": ["error", "double"]
+    },
 }

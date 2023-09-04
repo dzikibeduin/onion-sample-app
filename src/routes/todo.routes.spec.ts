@@ -4,7 +4,7 @@ import request from "supertest";
 
 describe("GET all todos", () => {
 
-    it ("returns status code 200", async () => {
+    test("returns status code 200", async () => {
         const res = await request(app)
             .get('/');
             
@@ -14,7 +14,7 @@ describe("GET all todos", () => {
 
 describe("POST /create new Todo", () => {
 
-    it ("returns status 400 if no params", async () => {
+    test("returns status 400 if no params", async () => {
         const res = await request(app)
             .post('/')
             .send({});

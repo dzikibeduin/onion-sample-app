@@ -1,5 +1,5 @@
-import app from "./app";
+import App from "./app";
 
-app.listen(process.env.PORT, () => {
-    console.log(`server running on ${process.env.PORT}`);
-});
+const app = new App(Number(process.env.PORT));
+
+app.listen();

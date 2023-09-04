@@ -1,5 +1,6 @@
 import { TodoService } from "services";
-import { Router, Response, Request } from "express";
+import { Router, Response, Request, NextFunction } from "express";
+import HttpException from "../exceptions/http.exception";
 
 export const TodoRouter = (router: Router, service: TodoService): void => {
     router.get('/', async (req: Request, res: Response) => {
@@ -12,18 +13,18 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
         }
     });
 
-    router.get('/:id', async (req: Request, res: Response) => {
+    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id: number = parseInt(req.params.id);
             const data = await service.GetTodo(id);
 
             res.status(200).send({ "result": data });
-        } catch (e) {
-            res.status(400).send({ "error": e });
+        } catch (e: any) {
+            next(new HttpException(400, e));
         }
     });
 
-    router.post('/', async (req: Request, res: Response) => {
+    router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { title, description } = req.body;
             const authorId = 1;
@@ -31,8 +32,8 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
             const result = await service.CreateTodo({ title, description, authorId });
 
             res.status(200).send({ "result": result });
-        } catch (e) {
-            res.status(400).send({ "error": e });
+        } catch (e: any) {
+            next(new HttpException(400, e));
         }
     });
 
