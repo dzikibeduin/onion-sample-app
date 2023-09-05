@@ -11,24 +11,24 @@ datasource db {
 }
 
 model Todo {
-  id Int @id @default(autoincrement())
-  title String @db.VarChar(255)
+  id          Int        @id @default(autoincrement())
+  title       String     @db.VarChar(255)
   description String?
-  author User @relation("CreatedTodos", fields: [authorId], references: [id])
-  authorId Int
-  resolver User? @relation("ResolvingTodos", fields: [resolverId], references: [id])
-  resolverId Int?
-  createdAt DateTime @default(now())
-  status TodoStatus @default(New)
+  author      User       @relation("CreatedTodos", fields: [authorId], references: [id])
+  authorId    Int
+  resolver    User?      @relation("ResolvingTodos", fields: [resolverId], references: [id])
+  resolverId  Int?
+  createdAt   DateTime   @default(now())
+  status      TodoStatus @default(New)
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  first_name String
-  last_name String
-  name String
-  email String @unique
-  createdTodos Todo[] @relation("CreatedTodos")
+  id             Int    @id @default(autoincrement())
+  first_name     String
+  last_name      String
+  name           String
+  email          String @unique
+  createdTodos   Todo[] @relation("CreatedTodos")
   resolvingTodos Todo[] @relation("ResolvingTodos")
 }
 

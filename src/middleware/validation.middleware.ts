@@ -1,6 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { Request, Response, NextFunction, RequestHandler } from "express"; 
-import Joi, { ValidationError, ValidationErrorItem } from "joi";
+import Joi from "joi";
 
 function validationMiddleware(schema: Joi.Schema): RequestHandler {
     return async(req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -16,7 +15,7 @@ function validationMiddleware(schema: Joi.Schema): RequestHandler {
             next();
         } catch(e: unknown) {
             const errors: string[] = [];
-            (e as ValidationError).details.forEach((error: Joi.ValidationErrorItem) => {
+            (e as Joi.ValidationError).details.forEach((error: Joi.ValidationErrorItem) => {
                 errors.push(error.message);
             });
             res.status(400).send({errors: errors});

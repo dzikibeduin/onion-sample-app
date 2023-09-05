@@ -1,18 +1,8 @@
-import { $Enums, Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { TodoInterface } from "types/types";
+import { TodoInterface } from "../interfaces/todo.interface";
 
 const prisma = new PrismaClient();
-
-interface TodoInterfaceResult {
-    id: number;
-    title: string;
-    description: string | null;
-    authorId: number;
-    resolverId: number | null;
-    createdAt: Date;
-    status: $Enums.TodoStatus;
-}
 
 export class Todo {
     public async GetTodos() {
@@ -37,19 +27,10 @@ export class Todo {
         }
     }
 
-    public async CreateTodo(data: TodoInterface): Promise<TodoInterfaceResult> {
+    public async CreateTodo(data: TodoInterface) {
         try {
             const result = await prisma.todo.create({
-                data: {
-                    title: data.title,
-                    description: data.description,
-                    author: {
-                        connect: {
-                            id: data.authorId
-                            
-                        }
-                    }
-                }
+                data: data
             });
             
             return result;

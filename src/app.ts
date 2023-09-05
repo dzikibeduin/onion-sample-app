@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import { Todo } from "./data_access";
 import { TodoService } from "./services";
 import { TodoRouter } from "./routes/todo.routes";
-import errorMiddleware from "./middlewares/error.middleware";
+import errorMiddleware from "./middleware/error.middleware";
 
 dotenv.config();
 

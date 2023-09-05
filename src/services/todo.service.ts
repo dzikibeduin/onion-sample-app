@@ -1,5 +1,5 @@
 import { Todo } from "data_access";
-import { TodoInterface } from "types/types";
+import { TodoInterface } from "../interfaces/todo.interface";
 
 export class TodoService {
     constructor(private todo: Todo) {}

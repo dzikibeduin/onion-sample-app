@@ -2,27 +2,28 @@ import { TodoService } from "services";
 import { Router, Response, Request, NextFunction } from "express";
 import HttpException from "../exceptions/http.exception";
 import validate from "../validations/todo.validation";
-import validationMiddleware from "../middlewares/validation.middleware";
+import validationMiddleware from "../middleware/validation.middleware";
 
 export const TodoRouter = (router: Router, service: TodoService): void => {
-    router.get('/', async (req: Request, res: Response) => {
+
+    router.route('/').get(async (req: Request, res: Response, next: NextFunction) => {
         try {
             const data = await service.GetTodos();
 
             res.status(200).send({ "results": data });
         } catch (e) {
-            res.status(400).send({ "error": e });
+            next(new HttpException(400, (e as string)));
         }
     });
 
-    router.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+   router.route('/:id').get(validationMiddleware(validate.get), async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id: number = parseInt(req.params.id);
             const data = await service.GetTodo(id);
 
             res.status(200).send({ "result": data });
-        } catch (e: any) {
-            next(new HttpException(400, e));
+        } catch (e: unknown) {
+            next(new HttpException(400, (e as string)));
         }
     });
 
@@ -34,12 +35,12 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
             const result = await service.CreateTodo({ title, description, authorId });
 
             res.status(200).send({ "result": result });
-        } catch (e: any) {
-            next(new HttpException(400, e));
+        } catch (e: unknown) {
+            next(new HttpException(400, (e as string)));
         }
     });
 
-    router.put('/:id', async (req: Request, res: Response) => {
+    router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { title, description } = req.body;
             const id: number = parseInt(req.params.id);
@@ -48,19 +49,19 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
             const result = await service.UpdateTodo({ title, description, authorId }, id);
 
             res.status(200).send({ "result": result });
-        } catch (e) {
-            res.status(400).send({ "error": e });
+        } catch (e: unknown) {
+            next(new HttpException(400, (e as string)));
         }
     });
 
-    router.delete('/:id', async (req: Request, res: Response) => {
+    router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id: number = parseInt(req.params.id);
             await service.DeleteTodo(id);
             
             res.sendStatus(200);
-        } catch (e) {
-            res.status(400).send({ "error": e });
+        } catch (e: unknown) {
+            next(new HttpException(400, (e as string)));
         }
     });
 }
