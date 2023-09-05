@@ -43,7 +43,7 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
     router.put('/:id', async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { title, description } = req.body;
-            const id: number = parseInt(req.params.id);
+            const id = parseInt(req.params.id);
             const authorId = 1;
 
             const result = await service.UpdateTodo({ title, description, authorId }, id);
@@ -56,7 +56,7 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
 
     router.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id: number = parseInt(req.params.id);
+            const id = parseInt(req.params.id);
             await service.DeleteTodo(id);
             
             res.sendStatus(200);
