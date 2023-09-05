@@ -16,7 +16,7 @@ export const TodoRouter = (router: Router, service: TodoService): void => {
         }
     });
 
-   router.route('/:id').get(validationMiddleware(validate.get), async (req: Request, res: Response, next: NextFunction) => {
+   router.route('/:id').get(validationMiddleware(validate.getOneTodo), async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id: number = parseInt(req.params.id);
             const data = await service.GetTodo(id);
